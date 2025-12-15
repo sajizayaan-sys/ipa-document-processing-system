@@ -8,4 +8,6 @@
 - Issue: Extracted data may be incomplete
 - Handling: Validation rules and confidence thresholds
 
-This list will grow as development continues.
+## Missing or Empty Input Directory
+- Issue: No files to process
+- Handling: System still generates empty report

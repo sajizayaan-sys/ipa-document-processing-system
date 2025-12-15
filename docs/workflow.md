@@ -11,4 +11,10 @@ This document describes the logical workflow of the system.
 5. Results are stored
 6. Output is generated
 
-This workflow will evolve as the system is built.
+## Day 2 Update - Local File Processing
+The system can now:
+- Scan files from an input directory
+- Extract basic metadata (name, size)
+- Generate a processing report
+- Store output in a structured folder
+This forms the base of future document automation.
