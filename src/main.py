@@ -1,18 +1,20 @@
+print("RUNNING UPDATED VERSION")
+
 from processors.text_extractor import extract_text_from_file
 
 from pathlib import Path
 from datetime import datetime
 
- HEAD
+
 #Define directories
-=======
+
 # Define directories
- 1a4834df67452a77a9a167e9f87cac4c2bab25f4
+
 BASE_DIR = Path(__file__).resolve().parent
 INPUT_DIR = BASE_DIR / "input"
 OUTPUT_DIR = BASE_DIR / "output"
 
- HEAD
+
 #Create Directories if they dont exist
 INPUT_DIR.mkdir(exist_ok=True)
 OUTPUT_DIR.mkdir(exist_ok=True)
@@ -21,7 +23,7 @@ OUTPUT_DIR.mkdir(exist_ok=True)
 INPUT_DIR.mkdir(exist_ok=True)
 OUTPUT_DIR.mkdir(exist_ok=True)
 
- 1a4834df67452a77a9a167e9f87cac4c2bab25f4
+
 def process_files():
     results = []
 
@@ -37,13 +39,12 @@ def process_files():
 
 
             results.append(info)
- HEAD
-        return results
+
 
 
     return results
 
- 1a4834df67452a77a9a167e9f87cac4c2bab25f4
+
 def generate_report(results):
     report_path = OUTPUT_DIR / "report.txt"
     with report_path.open("w", encoding="utf-8") as f:
