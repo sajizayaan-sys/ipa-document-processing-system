@@ -1,3 +1,5 @@
+from processors.text_extractor import extract_text_from_file
+
 from pathlib import Path
 from datetime import datetime
 
@@ -15,11 +17,15 @@ def process_files():
 
     for file in INPUT_DIR.iterdir():
         if file.is_file():
+            text = extract_text_from_file(file)
+
             info = {
                 "filename": file.name,
                 "size_bytes": file.stat().st_size,
-                "processed_at": datetime.utcnow().isoformat()
-            }
+                "text_length": len(text),
+            } 
+
+
             results.append(info)
 
     return results
@@ -31,7 +37,7 @@ def generate_report(results):
             f.write(
                 f"File: {item['filename']} | "
                 f"Size: {item['size_bytes']} bytes | "
-                f"Processed: {item['processed_at']}\n"
+                f"Text length: {item['text_length']} characters\n"
             )
 
     return report_path
@@ -41,3 +47,4 @@ if __name__ == "__main__":
     report = generate_report(data)
     print(f"Processed {len(data)} files.")
     print(f"Report saved to: {report}")
+

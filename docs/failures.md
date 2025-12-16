@@ -16,3 +16,9 @@ This list will grow as development continues.
 ## Missing or Empty Input Directory
 - Issue: No files to process
 - Handling: System still generates empty report
+
+## Scanned or Image-Based PDFs
+- Issue: Some PDFs contain images instead of text
+- Handling: Text extraction returns empty result
+- Future: OCR integration required
+

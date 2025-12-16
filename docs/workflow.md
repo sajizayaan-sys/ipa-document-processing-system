@@ -25,3 +25,12 @@ The system can now:
 
 This forms the base of future document automation.
 
+## Day 3 Update – Text Extraction
+
+The system can now:
+- Read text from .txt files
+- Extract text from PDF documents
+- Measure extracted content length
+- Continue processing even when text extraction fails
+
+
