@@ -32,4 +32,16 @@ This forms the base of future document automation.
 
 This forms the base of future document automation.
 
+<<<<<<< HEAD
+## Day 3 Update – Text Extraction
+
+The system can now:
+- Read text from .txt files
+- Extract text from PDF documents
+- Measure extracted content length
+- Continue processing even when text extraction fails
+
+
+=======
 1a4834df67452a77a9a167e9f87cac4c2bab25f4
+>>>>>>> 9ef464e583dd56a293bf46661f823c024fa66053
