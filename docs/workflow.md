@@ -11,28 +11,16 @@ This document describes the logical workflow of the system.
 5. Results are stored
 6. Output is generated
 
-HEAD
-## Day 2 Update - Local File Processing
-
-This workflow will evolve as the system is built.
-
-This workflow will evolve as the system is built.
-
 ## Day 2 Update – Local File Processing
 
-1a4834df67452a77a9a167e9f87cac4c2bab25f4
 The system can now:
 - Scan files from an input directory
 - Extract basic metadata (name, size)
 - Generate a processing report
 - Store output in a structured folder
-HEAD
-This forms the base of future document automation.
-
 
 This forms the base of future document automation.
 
-<<<<<<< HEAD
 ## Day 3 Update – Text Extraction
 
 The system can now:
@@ -41,17 +29,22 @@ The system can now:
 - Measure extracted content length
 - Continue processing even when text extraction fails
 
+## Day 4 Update – GitHub Integration & Professionalization
 
-=======
-1a4834df67452a77a9a167e9f87cac4c2bab25f4
->>>>>>> 9ef464e583dd56a293bf46661f823c024fa66053
+The system can now:
+- Track source code changes using Git
+- Maintain a clean commit history
+- Synchronize local development with a public GitHub repository
+- Provide clear documentation for external users
+- Serve as a portfolio-ready automation project
 
 ## Day 5 Update – File-Type Aware Processing
 
 The system now:
-- Detects file types explicitly
+- Detects file types before processing
 - Processes only supported document formats
 - Skips unsupported files safely
 - Detects empty or failed text extraction
+- Prevents invalid files from appearing in reports
 - Logs all decisions for audit and debugging
 
