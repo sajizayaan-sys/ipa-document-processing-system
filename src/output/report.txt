@@ -1,3 +1,2 @@
-File: notext.txt | Size: 0 bytes | Text length: 0 characters
 File: sample.pdf | Size: 54836 bytes | Text length: 5508 characters
 File: zayaan.txt | Size: 2224 bytes | Text length: 2191 characters

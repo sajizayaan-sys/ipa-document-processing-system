@@ -66,7 +66,7 @@ def process_files(recursive=False) :
             
             if not text.strip():
                 logging.warning(f"No text found in file: {file.name}")          
-            
+                continue
             info = {
                 "filename": file.name,
                 "extension": file.suffix.lower(),
