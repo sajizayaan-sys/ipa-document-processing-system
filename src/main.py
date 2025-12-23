@@ -13,7 +13,7 @@ logging.basicConfig(
 
 print("RUNNING UPDATED VERSION")
 
-from processors.text_extractor import extract_text_from_file
+
 
 from pathlib import Path
 from datetime import datetime
@@ -45,16 +45,15 @@ def process_files():
             if not file.is_file():
                 continue
 
-            text = extract_text_from_file(file)
 
             info = {
                 "filename": file.name,
                 "size_bytes": file.stat().st_size,
-                "text_length": len(text),
                 "processed_at": datetime.utcnow().isoformat()
             }
 
             results.append(info)
+            logging.info(f"Processed file: {file.name}")
 
         except Exception as e:
             logging.error(f"Failed processing {file}: {e}")
@@ -71,7 +70,7 @@ def generate_report(results):
                 f.write(
                     f"File: {item['filename']} | "
                     f"Size: {item['size_bytes']} bytes | "
-                    f"Text length: {item['text_length']} characters\n"
+                    f"Processed: {item['processed_at']}\n"
                 )
 
         logging.info("Report generated successfully")
