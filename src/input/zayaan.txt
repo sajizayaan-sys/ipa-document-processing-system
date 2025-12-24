@@ -1,29 +1,4 @@
-Paint is a liquid or solid mixture of pigments (for color) and a binder (to hold it together), suspended in a solvent (like water or oil) that allows it to be spread as a thin, protective, and decorative coating that dries into a solid film. It's used to color surfaces, add texture, and protect them from weathering, corrosion, and damage, with common types including water-based (latex/acrylic) and oil-based paints. 
-A book is a portable collection of written, printed, or illustrated pages, bound together and protected by covers, used for recording and sharing information, stories, or knowledge, though the definition extends to digital versions (e-books) and even business/record-keeping ledgers. Beyond the physical object, "book" can refer to a major section of a larger work (like the Bible), rules, or even the act of reserving something (like booking a flight). 
-Key Aspects of a Book:
-Physical Form: Typically paper sheets bound along one edge, featuring text, images, and covers.
-Content: A long-form composition of fiction, non-fiction, or educational material.
-Purpose: To transmit knowledge, entertain, or preserve information.
-Variations: Includes scrolls, modern paperbacks, hardcover editions, and digital formats (e-books, audiobooks).
-Figurative Meanings:
-A division of a major work (e.g., "the Book of Psalms").
-A ledger for accounts (e.g., "the company's books").
-A set of rules or standards ("by the book"). 
-Beyond the Object:
-Verb (to book): To reserve something in advance (a hotel, ticket) or to officially record someone's name (a police booking, a referee's caution). 
-What is a Book? | Dartmouth Libraries
-The Oxford English Dictionary defines a book as : A portable volume consisting of a series of written, printed, or illustrated pag...
-
-Dartmouth Libraries
-
-Book Definition & Meaning | Britannica Dictionary
-1 book /ˈbʊk/ noun. plural books. 1 book. /ˈbʊk/ noun. plural books. Britannica Dictionary definition of BOOK. 1. [count] a : a se...
-
-Britannica
-
-BOOK Definition & Meaning - Dictionary.com
-noun. a handwritten or printed work of fiction or nonfiction, usually on sheets of paper fastened or bound together within covers.
-
-Dictionary.com
+This is a sample invoice for office supplies.
+Total amount due is AED 1,250.
 
 Show all

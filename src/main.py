@@ -1,11 +1,23 @@
+from processors.pdf_extractor import extract_text_from_pdf
 import json
 import argparse
 from pathlib import Path
 from datetime import datetime
 import logging
+import os
+from dotenv import load_dotenv
+from openai import OpenAI
+from reportlab.lib.pagesizes import A4
+from reportlab.pdfgen import canvas
+from reportlab.lib.units import cm
+
+
+load_dotenv()  # loads .env file
+
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+
 
 SUPPORTED_TEXT_EXTENSIONS = [".txt", ".pdf"]
-
 
 LOG_DIR = Path(__file__).resolve().parent / "logs"
 LOG_DIR.mkdir(exist_ok=True)
@@ -23,59 +35,100 @@ from processors.text_extractor import extract_text_from_file
 from pathlib import Path
 from datetime import datetime
 
-
-#Define directories
-
 # Define directories
-
 BASE_DIR = Path(__file__).resolve().parent
 INPUT_DIR = BASE_DIR / "input"
 OUTPUT_DIR = BASE_DIR / "output"
-
 
 #Create Directories if they dont exist
 INPUT_DIR.mkdir(exist_ok=True)
 OUTPUT_DIR.mkdir(exist_ok=True)
 
-# Create directories if they don't exist
-INPUT_DIR.mkdir(exist_ok=True)
-OUTPUT_DIR.mkdir(exist_ok=True)
+TEXT_OUTPUT_DIR = OUTPUT_DIR / "extracted_text"
+TEXT_OUTPUT_DIR.mkdir(exist_ok=True)
+
 
 def load_config():
     with open("config.json", "r", encoding="utf-8") as f:
         return json.load(f)
 
+def analyze_document(text: str) -> dict:
+    if not text or len(text.strip()) < 50:
+        logging.warning("Text too short for AI analysis")
+        return {}
+
+    prompt = f"""
+You are a document analysis system.
+
+Return ONLY valid JSON in this exact structure:
+
+{{
+  "document_type": "invoice | contract | form | report | other",
+  "summary": "one short paragraph summary"
+}}
+
+Text:
+{text[:4000]}
+"""
+
+    try:
+        response = client.chat.completions.create(
+            model="gpt-4o-mini",
+            messages=[
+                {"role": "system", "content": "You only return valid JSON."},
+                {"role": "user", "content": prompt}
+            ],
+            temperature=0
+        )
+
+        content = response.choices[0].message.content
+        return json.loads(content)
+
+    except Exception as e:
+        logging.error(f"LLM analysis failed: {e}")
+        return {}
 
 def process_files(recursive=False) :
-
     results = []
 
     iterator = INPUT_DIR.rglob("*") if recursive else INPUT_DIR.iterdir()
     
     for file in iterator:
-
         try:
             if not file.is_file():
                 continue
 
-            if file.suffix.lower() not in SUPPORTED_TEXT_EXTENSIONS:
-                logging.warning(f"Skipped unsupported file: {file.name}")
+            # Choose extraction method
+            if file.suffix.lower() == ".pdf":
+                text = extract_text_from_pdf(file)
+            else:
+                text = extract_text_from_file(file)
+
+            # Skip empty text
+            if not text or not text.strip():
+                logging.warning(f"No text found in file: {file.name}")
                 continue
 
-            text = extract_text_from_file(file)
-            
-            if not text.strip():
-                logging.warning(f"No text found in file: {file.name}")          
-                continue
+            # 3️⃣ AI ANALYSIS (THIS IS THE LINE YOU ASKED ABOUT)
+            analysis = analyze_document(text)
+
+            # Metadata
             info = {
                 "filename": file.name,
                 "extension": file.suffix.lower(),
                 "size_bytes": file.stat().st_size,
                 "text_length": len(text),
-                "processed_at": datetime.utcnow().isoformat()
-            }
-           
+                "processed_at": datetime.utcnow().isoformat(),
+                "document_type": analysis.get("document_type"),
+                "summary": analysis.get("summary")
+}
+
             results.append(info)
+
+            # Save extracted text
+            text_output_path = TEXT_OUTPUT_DIR / f"{file.stem}.txt"
+            text_output_path.write_text(text, encoding="utf-8")
+
             logging.info(f"Processed file: {file.name}")
 
         except Exception as e:
@@ -83,23 +136,53 @@ def process_files(recursive=False) :
 
     return results
 
-
 def generate_report(results):
-    report_path = OUTPUT_DIR / "report.txt"
+    report_path = OUTPUT_DIR / "document_analysis_report.pdf"
 
     try:
-        with report_path.open("w", encoding="utf-8") as f:
-            for item in results:
-                f.write(
-                    f"File: {item['filename']} | "
-                    f"Size: {item['size_bytes']} bytes | "
-                    f"Text length: {item['text_length']} characters\n"
-                )
+        c = canvas.Canvas(str(report_path), pagesize=A4)
+        width, height = A4
 
-        logging.info("Report generated successfully")
+        y = height - 2 * cm
+
+        # Report title
+        c.setFont("Helvetica-Bold", 18)
+        c.drawString(2 * cm, y, "Document Processing & AI Analysis Report")
+
+        y -= 1.5 * cm
+        c.setFont("Helvetica", 11)
+        c.drawString(2 * cm, y, f"Generated on: {datetime.utcnow().isoformat()}")
+
+        y -= 2 * cm
+
+        for idx, item in enumerate(results, start=1):
+            if y < 4 * cm:
+                c.showPage()
+                y = height - 2 * cm
+
+            c.setFont("Helvetica-Bold", 12)
+            c.drawString(2 * cm, y, f"{idx}. File: {item['filename']}")
+            y -= 0.8 * cm
+
+            c.setFont("Helvetica", 11)
+            c.drawString(2 * cm, y, f"Type: {item.get('document_type', 'unknown')}")
+            y -= 0.8 * cm
+
+            summary = item.get("summary", "No summary available")
+            text_obj = c.beginText(2 * cm, y)
+            text_obj.setFont("Helvetica", 11)
+
+            for line in summary.splitlines():
+                text_obj.textLine(line)
+
+            c.drawText(text_obj)
+            y = text_obj.getY() - 1.2 * cm
+
+        c.save()
+        logging.info("PDF report generated successfully")
 
     except Exception as e:
-        logging.error(f"Failed to generate report: {e}")
+        logging.error(f"Failed to generate PDF report: {e}")
 
     return report_path
 
@@ -129,7 +212,6 @@ def parse_args():
     )
 
     return parser.parse_args()
-
 
 if __name__ == "__main__":
    
